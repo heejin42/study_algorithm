@@ -5,4 +5,5 @@
 - 새로운 tool 공부 및 toy project 
 
 
-velog - https://velog.io/@lhj99apr
+velog - https://velog.io/@lhj99apr. 
+notion - https://www.notion.so/303abbd30e3c40e2bdc27f700e26a695
