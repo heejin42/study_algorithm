@@ -16,4 +16,8 @@ dp = []
 for i in range(n):
     dp.append(dp_1[i]+dp_2[i])
 
+for i in range(n):
+    dp.append(dp_1[i]+dp_2[i])
+
+    today i 
 print(max(dp)-1)
