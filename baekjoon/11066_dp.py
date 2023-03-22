@@ -1,20 +1,19 @@
 import sys
 input = sys.stdin.readline
-T = int(input())
-def get_file_cost(files):
-    cost = [0]*len(files)
-    for i in range(len(files)):
-        if i == 0:
-            cost[i] = files[i]
-        else: 
-            idx = cost.index(min(cost[:i]))
-            cost[i] = files[i] + cost[idx] + cost[idx]
-            cost[idx] = 1e9
-
-    print(cost[-1])
-
-for t in range(T):
-    k = int(input())
-    files = list(map(int,input().split(' ')))
-    get_file_cost(files)
-
+def solve():
+    N, A = int(input()), [0] + list(map(int, input().split()))
+    
+    S = [0 for _ in range(N+1)]
+    for i in range(1, N+1):
+        S[i] = S[i-1] + A[i]
+ 
+    #
+    DP = [[0 for i in range(N+1)] for _ in range(N+1)]
+    for i in range(2, N+1):
+        for j in range(1, N+2-i): 
+            DP[j][j+i-1] = min([DP[j][j+k] + DP[j+k+1][j+i-1] for k in range(i-1)]) + (S[j+i-1] - S[j-1])
+ 
+    print(DP[1][N])
+ 
+for _ in range(int(input())):
+    solve()
