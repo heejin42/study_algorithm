@@ -6,6 +6,20 @@
 - 최대 힙: 부모 노드의 키값이 자식 노드의 키값보다 항상 큰 힙
 (img)[https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbbaE6G%2FbtqCd0Jdb4a%2FCkug8Iw2TvL4K3xdQadSX0%2Fimg.png]
 
+### 부모 노드와 자식 노드 관계
+왼쪽 자식 index = (부모 index) * 2
+오른쪽 자식 index = (부모 index) * 2 + 1
+부모 index = (자식 index) / 2
+
+### 힙의 삽입
+1.힙에 새로운 요소가 들어오면, 일단 새로운 노드를 힙의 마지막 노드에 삽입
+2.새로운 노드를 부모 노드들과 교환
+
+### 힙의 삭제
+1.최대 힙에서 최대값은 루트 노드이므로 루트 노드가 삭제됨 (최대 힙에서 삭제 연산은 최대값 요소를 삭제하는 것)
+2.삭제된 루트 노드에는 힙의 마지막 노드를 가져옴
+3.힙을 재구성
+
 ### 파이썬 힙 자료구조 heapq 모듈
 파이썬 heapq 모듈은 내장 모듈로 heapq (priority queue) 알고리즘을 제공한다.
 모든 부모 노드는 그의 자식 노드보다 값이 작거나 큰 이진트리(binary tree) 구조인데, 내부적으로는 인덱스 0에서 시작해 k번째 원소가 항상 자식 원소들(2k+1, 2k+2) 보다 작거나 같은 최소 힙의 형태로 정렬된다. 
