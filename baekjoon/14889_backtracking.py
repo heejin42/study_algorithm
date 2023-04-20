@@ -1,4 +1,3 @@
-import itertools
 import sys
 input = sys.stdin.readline
 
@@ -8,24 +7,25 @@ for _ in range(n):
     graph.append(list(map(int, input().split(' '))))
 
 visited = [False for _ in range(n)]   
+result = 2e9
 
-def solution(depth, id):
-    global graph, n, visited
+def solution(depth, idx):
+    global graph, n, visited, result
     if depth == (n//2):
         start = 0
         link = 0
         for i in range(n):
             for j in range(i+1, n):
                 if visited[i] and visited[j]:
-                    start += (array[i][j] + array[j][i])
+                    start += (graph[i][j] + graph[j][i])
                 elif not visited[i] and not visited[j]:
-                    link += (array[i][j] + array[j][i])
+                    link += (graph[i][j] + graph[j][i])
         result = min(result, abs(start - link))
-        for i in range(idx, n):
-            if nott visited[i]:
-                visited[i] = True 
-                solution(depth+1, i+1)
-                visited[i] = False
+    for i in range(idx, n):
+        if not visited[i]:
+            visited[i] = True 
+            solution(depth+1, i+1)
+            visited[i] = False
     
-solution(graph, n)
+solution(0,0)
 print(result)
