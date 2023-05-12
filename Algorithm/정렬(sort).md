@@ -18,7 +18,7 @@ array = [8,4,6,2,9,1,3,7,5]
 
 def merge_sort(array):
 	if len(array) < 2:
-		return array
+		return arra
 	mid = len(array) // 2
 	low_arr = merge_sort(array[:mid])
 	high_arr = merge_sort(array[mid:])
