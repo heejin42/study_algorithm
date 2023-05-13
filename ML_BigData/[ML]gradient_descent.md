@@ -4,16 +4,16 @@
 오차 = Σ(ŷ-y)   
 
 ### MSE (평균제곱오차)
-1/nΣ(ŷ-y)<sup>2<sup> = 오차의 제곱들의 평균 = 손실함수 L   
+1/nΣ(ŷ-y)<sup>2 = 오차의 제곱들의 평균 = 손실함수 L   
 손실함수는 2차식이며, 가장 낮은 부분을 구하는 것이 오차가 적어진다고 이해할 수 있다.   
 손실함수 값이 가장 낮은 부분 == 기울기가 0인 부분   
 즉, 손실함수의 기울기가 0이 될 때까지 찾아가는 것이 경사하강법이다.   
 
 ŷ = 예측값 = wx + b (w: weight, b: bias)   
-1/nΣ(ŷ-y)<sup>2<sup> = 1/nΣ(wx+b-y)<sup>2<sup>   
+1/nΣ(ŷ-y)<sup>2 = 1/nΣ(wx+b-y)<sup>2   
 
 ### w에 대한 편미분
-식 - **∂/∂w(1/nΣ(wx+b-y)<sup>2<sup>)**   
+식 - **∂/∂w(1/nΣ(wx+b-y)<sup>2)**   
    
 **1) chain rule 적용하기**   
    > 위의 식을 w에 대해 편미분을 하여 w에 대한 기울기를 구해야 한다.      
@@ -50,7 +50,7 @@ b = b - gradient b
 계속 업데이트 해간다.   
 
 최종 업데이트 코드 (LR = Learning Rate)   
-<sub>gd<sub>W =  LR · ((ŷ-y)·x)의 평균   
-<sub>gd<sub>b =  LR · (ŷ-y)의 평균   
-W = W - <sub>gd<sub>W   
-b = b - <sub>gd<sub>b   
+<sub>gd</sub>W =  LR · ((ŷ-y)·x)의 평균   
+<sub>gd</sub>b =  LR · (ŷ-y)의 평균   
+W = W - <sub>gd</sub>W   
+b = b - <sub>gd</sub>b   
