@@ -20,11 +20,13 @@ ŷ = 예측값 = wx + b (w: weight, b: bias)
    > -> W(gradient) = (1/n) Σ 2 * (wx+b-y) * x   
    > -> 2/nΣx(wx+b-y)   
    > -> 위 값을 w에 업데이트 해주면 된다.   
+
 **2) learning-rate = 업데이트 W * 0.5, 0.05**   
    > 실제로 w 개수가 많기 때문에 weight update 의 정도를 작아지게 미세 조정하기 위한 방법으로 0.5 혹은 0.05 등을 곱해준다.   
    > 상수를 어차피 곱해주기 때문에 W(gradient) 상수를 무시해도 괜찮다.   
-   > 즉 최종적으로 LR * MEAN(x(wx+b-y))라고 할 수 있으며, wx+b = ŷ이므로 다시 한번 정리하면   
-   > **LR x MEAN(x(ŷ-y))** == **업데이트할 weight**   
+
+즉 최종적으로 LR * MEAN(x(wx+b-y))라고 할 수 있으며, wx+b = ŷ이므로 다시 한번 정리하면     
+**업데이트할 weight** = **LR x MEAN(x(ŷ-y))** 
 
 ### b에 대한 편미분
 식 - **∂/∂b(1/nΣ(wx+b-y)^2)**  
@@ -34,11 +36,13 @@ ŷ = 예측값 = wx + b (w: weight, b: bias)
    > -> b(gradient) = (1/n) Σ 2*(wx+b-y)   
    > -> 2/nΣ(wx+b-y)   
    > -> 위 값을 b에 업데이트 해주면 된다.   
+
 **2) learning-rate = 업데이트 b * 0.5 or 0.05**   
    > 실제로 b 개수가 많기 때문에 bias update 의 정도를 작아지게 미세 조정하기 위한 방법으로 0.5 혹은 0.05 등을 곱해준다.   
    > 상수를 어차피 곱해주기 때문에 b(gradient) 상수를 무시해도 괜찮다.   
-   > 즉 최종적으로 LR * MEAN(wx+b-y)라고 할 수 있으며, wx+b = ŷ이므로 다시 한번 정리하면   
-   > **LR x MEAN(ŷ-y)** == **업데이트할 bias**   
+
+즉 최종적으로 LR * MEAN(wx+b-y)라고 할 수 있으며, wx+b = ŷ이므로 다시 한번 정리하면   
+**업데이트할 bias** = **LR x MEAN(ŷ-y)**
 
 ## 최종 정리
 w = w - gradient w   
@@ -46,7 +50,7 @@ b = b - gradient b
 계속 업데이트 해간다.   
 
 최종 업데이트 코드 (LR = Learning Rate)   
-gd~W =  LR · ((ŷ-y)·x)의 평균   
-gd~b =  LR · (ŷ-y)의 평균   
-W = W - gd~W   
-b = b - gd~b   
+~gd~W =  LR · ((ŷ-y)·x)의 평균   
+~gd~b =  LR · (ŷ-y)의 평균   
+W = W - ~gd~W   
+b = b - ~gd~b   
