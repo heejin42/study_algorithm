@@ -44,8 +44,35 @@ x, y ∈ V ⇒ x + y ∈ V
 
 ## 벡터의 내적
 아래 페이지 참고   
-![url](https://angeloyeo.github.io/2020/09/09/row_vector_and_inner_product.html)
+![url](https://angeloyeo.github.io/2020/09/09/row_vector_and_inner_product.html)   
+
+
+## 벡터와 유사도
+A 벡터와 B 벡터의 유사도를 구하는 것은 방향 사이 각의 크기를 구하는 것과 같다.   
+similiarty(A, B) = cos(사이각) = A⋅B / ||A|| ||B||   
+
+## 벡터의 Norm
+* 1-Norm    
+  L1 distance로 맨하탄 거리(Manhatten Distance)라고도 한다. 각 좌표 차이의 절대값의 합   
+* 2-Norm     
+  L2 distance로 유클리디안 거리라고도 한다. 일반적인 거리 개념으로 각 좌표 차이의 제곱의 합을 루트씌운 값   
+* 3-Norm    
+  L3 distance로 유클리디안 거리와 비슷하지만 세제곱을 하는 차이가 있다.    
 
 ## 행렬과 선형 변환
+1. Identity Matrix(Unit Matrix, 단위 행렬)
+   행렬에서 [i, i] 는 1, 나머지는 0인 행렬로, 자기 자신 값만 True를 갖는다. 통계에서 이 행렬을 I 또는 E로 표시한다. 
+
+2. Transpose(전치 행렬)
+  행과 열을 뒤바꾼 것으로 행렬 위 첨자에 T를 붙인다.   
+  행렬 A가 있을 때, (A<sup>T</sup>)<sub>ij</sub> = A<sub>ji</sub>    
+
+3. Inverse Matrix(역행렬)   
+A의 역행렬은 곱해서 단위행렬이 나오게 하는 행렬을 말한다. 즉 B가 A의 역행렬인 경우 AB = I, BA = I 이다. 역행렬을 구하는 방법은 다음과 같다.    
+![img](../img/reverse_matrix.jpeg)
+
+
 아래 페이지를 참고   
-![url](https://angeloyeo.github.io/2019/07/15/Matrix_as_Linear_Transformation.html)
+![url](https://angeloyeo.github.io/ 2019/07/15/Matrix_as_Linear_Transformation.html)
+
+
