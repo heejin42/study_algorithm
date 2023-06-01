@@ -29,5 +29,3 @@
 ### 그래프
 ![img](https://e7.pngegg.com/pngimages/444/211/png-clipart-bernoulli-distribution-probability-distribution-statistics-cumulative-distribution-function-kurtosis.png)  
 
-
-## 기초 통계학
