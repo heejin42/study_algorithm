@@ -1,21 +1,21 @@
 def solution(arr):
-    # -를 만날때까지 최대, 최소를 계산할 것!
-    max_num = int(arr[-1])
-    min_num = int(arr[-1])
-    keep = ''
-    for i in range(len(arr)-2, -1, -1):
-        if i%2 == 1:
-            keep = arr[i]
-        else:
-            num = int(arr[i])
-            if keep == '-':
-                max_num_1 = num - min_num
-                min_num = num - max_num
-                max_num = max_num_1
-            elif keep == '+':
-                max_num = num + max_num
-                min_num = num + min_num
-    return max_num
+    minmax = [0, 0]
+    sum_value = 0
+    for idx in range(len(arr)-1, -1, -1):
+        if arr[idx] == '+':
+            continue
+        elif arr[idx] == '-':
+            tempmin, tempmax = minmax
+            minmax[0] = min(-(sum_value + tempmax), -sum_value+tempmin)
+            # -(sum + max):-가 식전체에 붙는 경우, -sum+min:-가 이전 -값 앞까지만 붙는 경우
+            minus_v = int(arr[idx+1])
+            minmax[1] = max(-(sum_value+tempmin), -minus_v+(sum_value-minus_v)+tempmax)
+            # -(sum + min):-가 식전체에 붙는 경우, -v+(sum-v)+max:-가 바로 뒤의 값에만 붙는 경우
+            sum_value = 0
+        elif int(arr[idx]) >= 0:
+            sum_value += int(arr[idx])
+    minmax[1] += sum_value
+    return minmax[1]
 
 
 arr = ["5", "-", "3", "+", "1", "+", "2", "-", "4"]
