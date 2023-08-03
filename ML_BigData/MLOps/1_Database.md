@@ -19,6 +19,8 @@ A container is a sandboxed process running on a host machine that is isolated fr
 ### what is a container image?
 A running container uses an isolated filesystem. This isolated filesystem is provided by a container image, and the container image must contain everything needed to run an application - all dependencies, configurations, scripts, binaries, etc. The image also contains other configurations for the container, such as environment variables, a default command to run, and other metadata.
 
+------------------------------------------------
+
 # 실습 - 1
 ## DB Server Creation
 
@@ -73,4 +75,168 @@ mydatabase=# \du
  heejin    | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 
 mydatabase=# 
+```
+
+----------------------------------------------
+
+# 실습 - 2
+## Table Creation
+생성된 DB에 query를 작성하여 테이블을 생성해보겠다.
+
+1. pandas, psycopg2-binary, scikit-learn 패키지를 설치한다.
+2. Python 스크립트를 이용하여 DB 에 접근한다.
+    - user : myuser
+    - password : mypassword
+    - host : localhost
+    - port : 5432
+    - database : mydatabase
+3. psycopg2 패키지를 사용하여 iris_data 테이블을 생성한다.
+    - 테이블은 다음과 같은 column 들을 갖고 있어야 한다.   
+    - id, sepal length (cm), sepal width (cm), petal length (cm), petal width (cm), target   
+4. psql 을 이용하여 생성한 테이블을 확인한다.
+
+### 패키지 설치
+```
+pip install pandas psycopg2-binary scikit-learn
+```
+<버전정보>   
+psycopg2-binary-2.9.6   
+pandas 1.1.3   
+scikit-learn 0.23.2
+
+### 테이블 생성
+python으로 PostgreSQL DB 서버에 접근하는 코드를 구현하는 가장 간단한 방법은 psycopg2 패키지를 이용하는 것이다. 자세한 내용은 [공식문서](https://www.psycopg.org/docs/)를 확인하자.   
+
+**DB Connection**
+psycopg2로 DB 접근하려면 connect 함수를 이용한다. db_connect이라는 connector 인스턴스를 생성한다. 일반적으로 DB 연결에는 user, password,host,port,database 5가지 정보가 필요하다.
+
+```python
+import psycopg2
+
+db_connect = psycopg2.connect(
+    user="heejin",
+    password="lhj6843*",
+    host="localhost",
+    port=5432,
+    database="mydatabase",
+)
+```
+
+테이블을 생성하기 위한 SQL 문은 아래와 같은 형식이다.   
+```sql
+CREATE TABLE table_name (
+    column1 datatype,
+    column2 datatype,
+    column3 datatype,
+)
+```
+
+그럼 한번 scikit-learn 패키지의 iris 데이터를 이용해서 입력해보겠다.   
+
+```python
+import pandas as pd
+from sklearn.datasets import load_iris
+
+X, y = load_iris(return_X_y = True, as_frame=True)
+df = pd.concat([x, y], axis='columns')
+
+print(df)
+print(df.dtypes)
+```
+
+데이터 타입과 컬럼 이름에 수정해야 할 부분이 있다. 그래서 수정 사항을 반영하기 위해 query를 작성한다.   
+
+```python
+create_table_query = """
+CREATE TABLE IF NOT EXISTS iris_data (
+    id SERIAL PRIMARY KEY,
+    timestamp timestamp,
+    sepal_length float8,
+    sepal_width float8,
+    petal_length float8,
+    petal_width float8,
+    target int
+);"""
+```
+
+**DB에 query 전달하기**
+작성한 쿼리를 DB에 전달하기 위해 아래 과정이 필요하다.   
+1. Connector에서 cursor를 열고 query를 전달한다.  
+```python
+cur = db_connect.cursor()
+cur.execute(create_table_query)
+```
+2. 전달된 쿼리를 실행하기 위해 connector에 commit를 한다.   
+```python
+db_connect.commit()
+```
+3. cursor 사용이 끝나면 cursor를 close한다.   
+```python
+cur.close()
+```
+
+위 세가지 과정을 하나의 프로세스로 처리하자.   
+```python
+with db_connect.cursor() as cur:
+    cur.excute(create_table_query)
+    db_connect.commit()
+```
+
+
+
+### Query 실행
+위 프로세스의 코드를 모아서 table_creator.py로 작성한다.    
+```python
+# table_creator.py
+import psycopg2
+
+
+def create_table(db_connect):
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS iris_data (
+        id SERIAL PRIMARY KEY,
+        timestamp timestamp,
+        sepal_length float8,
+        sepal_width float8,
+        petal_length float8,
+        petal_width float8,
+        target int
+    );"""
+    print(create_table_query)
+    with db_connect.cursor() as cur:
+        cur.execute(create_table_query)
+        db_connect.commit()
+
+
+if __name__ == "__main__":
+    db_connect = psycopg2.connect(
+        user="myuser",
+        password="mypassword",
+        host="localhost",
+        port=5432,
+        database="mydatabase",
+    )
+    create_table(db_connect)
+```
+
+위 코드를 실행한다. 만약 실행 시 psycopg2 패키지 설치가 필요하다면 pip으로 설치하고 다시 실행하면 된다.
+
+### 테이블 확인
+
+1) psql로 DB 접속하기   
+```
+PGPASSWORD=password psql -h localhost -p 5432 -U heejin -d mydatabase
+```
+2) \d 를 입력해 생성된 테이블 목록을 확인하면 아래와 같이 생성되있을 것이다.   
+```
+psql (14.8 (Homebrew), server 14.0 (Debian 14.0-1.pgdg110+1))
+Type "help" for help.
+
+mydatabase=# \d
+               List of relations
+ Schema |       Name       |   Type   | Owner  
+--------+------------------+----------+--------
+ public | iris_data        | table    | heejin
+ public | iris_data_id_seq | sequence | heejin
+(2 rows)
 ```
