@@ -25,6 +25,14 @@
 #     return answer
 
 def solution(gems):
+    
+    board = []
+    n = len(board)
+    
+    for i in range(n):
+        for j in ragne(n):
+            if board[i][j] == 0:
+                
     N = len(gems)
     answer = [0, N-1]
     kind = len(set(gems))  # 보석종류
