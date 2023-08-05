@@ -240,3 +240,47 @@ mydatabase=# \d
  public | iris_data_id_seq | sequence | heejin
 (2 rows)
 ```
+
+# 실습 - 3
+## Data Insertion
+이번에는 앞서 생성한 테이블에 데이터를 삽입하고 확인해볼 것이다.
+
+### 데이터 삽입
+1) Iris 데이터 불러오기    
+    삽입할 데이터는 Iris 데이터로 scikit-learn 패키지의 load_iris를 이용한다. 데이터를 불러와서 앞에 생성해놓은 테이블과 컬럼명이 일치하도록 수정해준다.  
+
+2) 데이터를 한줄 추출하여 입력하는 query를 포함하여 입력 함수를 작성한다.   
+```python
+def insert_data(db_connect, data):
+    insert_row_query = f"""
+    INSERT INTO iris_data
+        (timestamp, sepal_length, sepal_width, petal_length, petal_width, target)
+        VALUES (
+            NOW(),
+            {data.sepal_length},
+            {data.sepal_width},
+            {data.petal_length},
+            {data.petal_width},
+            {data.target}
+        );"""
+    print(insert_row_query)
+    with db_connect.cursor() as cur:
+        cur.execute(insert_row_query)
+        db_connect.commit()
+```
+
+
+3) 확인하기      
+위의 과정을 하나의 파이썬 파일 data_insertion.py로 작성하고 실행한 다음, psql로 DB 서버 접속하여 확인해보면 데이터가 한줄 입력된 것을 확인할 수 있다.
+```
+    PGPASSWORD=password psql -h localhost -p 5432 -U heejin -d mydatabase
+```
+```mysql
+select * from iris_data;
+```
+
+mydatabase=# select * from iris_data;
+ id |         timestamp          | sepal_length | sepal_width | petal_length | petal_width | target 
+----+----------------------------+--------------+-------------+--------------+-------------+--------
+  1 | 2023-08-05 09:00:25.150453 |          6.3 |         3.3 |            6 |         2.5 |      2
+(1 row)
