@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 import psycopg2
 from sklearn.datasets import load_iris
@@ -29,7 +30,12 @@ def insert_data(db_connect, data):
     with db_connect.cursor() as cur:
         cur.execute(insert_row_query)
         db_connect.commit()
-                
+    
+def gennerate_data(db_connect, df):
+    while True:
+        insert_data(db_connect, df.sample(1).squeeze())
+        time.sleep(1)
+            
 if __name__ == "__main__":
     db_connect = psycopg2.connect(
         user = "heejin",
@@ -39,5 +45,6 @@ if __name__ == "__main__":
         database = "mydatabase"
     )
     
-    df = get_data()                
-    insert_data(db_connect, df.sample(1).squeeze())
+    df = get_data()  
+    gennerate_data(db_connect, df)              
+    
