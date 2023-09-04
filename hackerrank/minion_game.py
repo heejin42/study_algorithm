@@ -12,7 +12,7 @@ def minion_game(string):
     score_s = 0
     for i in range(len(string)):
         x = string[i]
-        if x in vowels:
+        if x in vowels:a
             score_k += length - i 
         else:
             score_s += length - i
@@ -22,7 +22,7 @@ def minion_game(string):
     elif score_k < score_s:
         result = "Stuart " + str(score_s)
     else:
-        res
+        result = "Draw"
     return result
  
 string = 'BANANA'
