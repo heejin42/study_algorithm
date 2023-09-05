@@ -29,8 +29,9 @@ def solution(board):
             while 0<=n_x+dx[i]<height and 0<=n_y+dy[i]<width and board[n_x+dx[i]][n_y+dy[i]]!='D':
                 n_x += dx[i]
                 n_y += dy[i]
-            dist[n_x][n_y] = min(dist[n_x][n_y], d+1)
-            q.append([n_x, n_y, d+1])
+            if dist[n_x][n_y] > d+1:   
+                dist[n_x][n_y] = d+1
+                q.append([n_x, n_y, d+1])
             
     result = -1
     return result
