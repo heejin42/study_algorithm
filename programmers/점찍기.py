@@ -4,7 +4,6 @@ def solution(k, d):
     # 총 몇개의 점을 찍을 수 있는가?
     # 즉, d*d >= x^2 + y^2, x와 y인 k의 배수
     answer = 0
-    
     for a in range(0, d+1, k):
         answer += (int((d**2 - a**2)**0.5))//k + 1
     return answer
