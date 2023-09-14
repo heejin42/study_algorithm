@@ -10,16 +10,16 @@ def solution(order):
     while q:
         if i == q[0]:
             q.popleft()
+            i += 1
         elif len(stack) > 0 and stack[-1] == q[0]:
             stack.pop()
             q.popleft()
-            continue
         else:
             if i > len(order) and stack[-1]!=q[0]:
                 break
             else:
                 stack.append(i)
-        i += 1
+                i += 1
     answer = len(order)-len(q)
     return answer
 
