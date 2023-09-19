@@ -27,5 +27,11 @@ stock_prices = pd.read_csv("World-Stock-Prices-Dataset.csv")
 
 # df = pd.read_csv("nexflix_stock.csv")
 # sns.scatterplot(x = 'High', y = 'Low', data=stock_prices, hue = "Industry_Tag")
-sns.regplot(x='High', y='Low', data=stock_prices, marker='+', ci=99)
+# sns.regplot(x='High', y='Low', data=stock_prices, marker='+', ci=99)
+# sns.countplot(y="Country", data=stock_prices)
+new = pd.DataFrame(stock_prices['Country'].value_counts()/stock_prices['Country'].count())
+new.reset_index(inplace=True)
+plt.pie(x=list(new['Country']),
+        labels = list(new['index']),
+        autopct = "%.2f%%")
 plt.show()
