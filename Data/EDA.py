@@ -5,14 +5,16 @@ import seaborn as sns
 
 stock_prices = pd.read_csv("World-Stock-Prices-Dataset.csv")
 
-stock_prices["Dividends"] = stock_prices["Dividends"].astype(object)
-stock_prices["Stock Splits"] = stock_prices["Stock Splits"].astype(object)
+# stock_prices["Dividends"] = stock_prices["Dividends"].astype(object)
+# stock_prices["Stock Splits"] = stock_prices["Stock Splits"].astype(object)
 
-missing_df = stock_prices.isnull().sum().reset_index()
-missing_df.columns = ['column', 'count']
-missing_df['ratio'] = missing_df['count'] / stock_prices.shape[0]
+# missing_df = stock_prices.isnull().sum().reset_index()
+# missing_df.columns = ['column', 'count']
+# missing_df['ratio'] = missing_df['count'] / stock_prices.shape[0]
 
-nexflix_stock = stock_prices[stock_prices['Brand_Name'] == "netflix"]
+# nexflix_stock = stock_prices[stock_prices['Brand_Name'] == "netflix"]
+# nexflix_stock.to_csv("nexflix_stock.csv")
+#nexflix_stock.head(10)
 # stock_cor = nexflix_stock[["Open", "Close"]].corr()
 # sns.heatmap(stock_cor)
 # sns.distplot(nexflix_stock['Open'])
@@ -20,6 +22,9 @@ nexflix_stock = stock_prices[stock_prices['Brand_Name'] == "netflix"]
 # sns.displot(nexflix_stock['Open'], kde=True)
 #sns.boxplot(stock_prices["Open"])
 #plt.show()
+# sns.lineplot(x='Open', y="Close", data=nexflix_stock)
+# plt.show()
 
-sns.lineplot(x='Open', y="Close", data=nexflix_stock)
+# df = pd.read_csv("nexflix_stock.csv")
+sns.scatterplot(x = 'High', y = 'Low', data=stock_prices, hue = "Industry_Tag")
 plt.show()
