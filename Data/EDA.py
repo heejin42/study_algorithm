@@ -26,5 +26,6 @@ stock_prices = pd.read_csv("World-Stock-Prices-Dataset.csv")
 # plt.show()
 
 # df = pd.read_csv("nexflix_stock.csv")
-sns.scatterplot(x = 'High', y = 'Low', data=stock_prices, hue = "Industry_Tag")
+# sns.scatterplot(x = 'High', y = 'Low', data=stock_prices, hue = "Industry_Tag")
+sns.regplot(x='High', y='Low', data=stock_prices, marker='+', ci=99)
 plt.show()
