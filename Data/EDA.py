@@ -14,14 +14,14 @@ stock_prices = pd.read_csv("World-Stock-Prices-Dataset.csv")
 
 # nexflix_stock = stock_prices[stock_prices['Brand_Name'] == "netflix"]
 # nexflix_stock.to_csv("nexflix_stock.csv")
-#nexflix_stock.head(10)
+# nexflix_stock.head(10)
 # stock_cor = nexflix_stock[["Open", "Close"]].corr()
 # sns.heatmap(stock_cor)
 # sns.distplot(nexflix_stock['Open'])
 # plt.hist(nexflix_stock['Open'], bins=20)
 # sns.displot(nexflix_stock['Open'], kde=True)
-#sns.boxplot(stock_prices["Open"])
-#plt.show()
+# sns.boxplot(stock_prices["Open"])
+# plt.show()
 # sns.lineplot(x='Open', y="Close", data=nexflix_stock)
 # plt.show()
 
@@ -29,9 +29,19 @@ stock_prices = pd.read_csv("World-Stock-Prices-Dataset.csv")
 # sns.scatterplot(x = 'High', y = 'Low', data=stock_prices, hue = "Industry_Tag")
 # sns.regplot(x='High', y='Low', data=stock_prices, marker='+', ci=99)
 # sns.countplot(y="Country", data=stock_prices)
-new = pd.DataFrame(stock_prices['Country'].value_counts()/stock_prices['Country'].count())
-new.reset_index(inplace=True)
-plt.pie(x=list(new['Country']),
-        labels = list(new['index']),
-        autopct = "%.2f%%")
+
+# 범주형 단변수 - 파이그래프
+# new = pd.DataFrame(stock_prices['Country'].value_counts()/stock_prices['Country'].count())
+# new.reset_index(inplace=True)
+# plt.pie(x=list(new['Country']),
+#         labels = list(new['index']),
+#         autopct = "%.2f%%")
+# plt.show()
+
+stock_data = stock_prices[stock_prices.Industry_Tag.isin(["technology", "entertainment", "social media", "apparel", "fitness", "footwear", "food", "food & beverage"])]
+# sns.barplot(x = 'Industry_Tag', y = 'High', data=stock_data)
+# sns.pointplot(x='Industry_Tag', y = 'High', data=stock_data
+# sns.boxplot(x='Industry_Tag', y='High', data=stock_data)
+food_stock = stock_prices[stock_prices.Industry_Tag.isin(["food", "food & beverage"])]
+sns.violinplot(x="Brand_Name", y="High", hue="Industry_Tag", data=food_stock)
 plt.show()
