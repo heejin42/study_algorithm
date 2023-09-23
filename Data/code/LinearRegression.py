@@ -7,10 +7,6 @@ import matplotlib.pyplot as plt
 
 
 df = pd.read_csv('./data/data.csv')
-# 집 값 예측
-x = df[['bedrooms','bathrooms','sqft_living','sqft_lot','floors','waterfront','view','condition']]
-y = df['price']
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, test_size=0.2)
 
 # fig, axs = plt.subplots(2, 2, figsize=(8,8))
 # ax1, ax2, ax3, ax4 = axs.flatten()
@@ -19,6 +15,11 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, test_s
 # ax3 = sns.lineplot(x = 'bathrooms', y = 'price', data = df, ax = ax3)
 # ax4 = sns.lineplot(x = 'condition', y = 'price', data = df, ax = ax4)
 # plt.show()
+
+# 집 값 예측
+x = df[['bedrooms','bathrooms','sqft_living','sqft_lot','floors','waterfront','view','condition']]
+y = df['price']
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, test_size=0.2)
 
 model = LinearRegression()
 model.fit(x_train, y_train)
