@@ -1,7 +1,7 @@
 # 갈 수 있는 경로가 정해져 있다.
 # 아이템은 테두리 위 어딘가에 있다.
 # 최소 경로 -> bfs
-from queue import PriorityQueue
+# ㄷ자 경로의 경우 길을 ㅁ자로 인식하게 됨 -> 모든 좌표값 두배로!
 from collections import deque
 def solution(rectangle, characterX, characterY, itemX, itemY):
     answer = 0
