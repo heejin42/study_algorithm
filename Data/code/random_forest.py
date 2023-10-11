@@ -7,21 +7,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score, roc_auc_score, confusion_matrix
 
-df = sns.load_dataset('iris')
-target = 'species'
-df['species']= [1 if i == 'versicolor' else 0 for i in df['species']]
-
-
+iris = load_iris()
+df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
+df['species']= iris.target
+df['species']= [1 if i == 1 else 0 for i in df['species']]
+print(df)
 train, test  = train_test_split(df, test_size  = 0.2, random_state = 2)
-feature = df.drop(columns = target).columns
-X_train = train[feature]
-y_train = train[target]
-X_test = test[feature]
-y_test = test[target]
-
-
-x_train,x_test,y_train,y_test = train_test_split(x_data,y_data,test_size=0.3)
-
+feature = df.drop(columns = 'species').columns
+x_train = train[feature]
+y_train = train['species']
+x_test = test[feature]
+y_test = test['species']
 
 # --------------------------------------------
 decit = DecisionTreeClassifier()
@@ -47,3 +43,14 @@ print('[test] f1:', f1_score(y_test, y_pred))
 print('[test] auc:', roc_auc_score(y_test, y_pred_proba))
 
 print('\n oob_score:',rf.oob_score_)
+
+
+# [test] accuracy: 0.9333333333333333
+# [test] f1: 0.875
+# [test] auc: 0.9147727272727273
+
+# [test] accuracy: 0.9666666666666667
+# [test] f1: 0.9333333333333333
+# [test] auc: 0.9744318181818181
+
+#  oob_score: 0.9583333333333334
