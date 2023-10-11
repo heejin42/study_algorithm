@@ -1,7 +1,6 @@
 def solution(targets):
     answer = 1
     targets.sort(key = lambda x:x[1])
-    print(targets)
     l = targets[0][0] 
     r = targets[0][1]
     for target in targets:
