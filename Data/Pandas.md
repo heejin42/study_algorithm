@@ -65,6 +65,12 @@ airlines.isna().sum()
 # Delay          0
 # dtype: int64
 
+# 결측치 제거
+airlines  = airlines.dropna()
+
+# 중복 데이터 삭제
+airlines = airlines.drop_duplicates()
+
 # 특정 열 유니크 값 확인
 airlines['Airline'].unique()
 # array(['CO', 'US', 'AA', 'AS', 'DL', 'B6', 'HA', 'OO', '9E', 'OH', 'EV', 'XE', 'YV', 'UA', 'MQ', 'FL', 'F9', 'WN'], dtype=object)
@@ -93,9 +99,75 @@ airlines['Airline'].value_counts(ascending=True)
 ```
 
 ## 2. 열 또는 행 선택
+```python
+# 일부 행 선택
+airlines[['id', 'Airline', 'Flight']]
+
+# 일부 열 선택
+airlines.iloc[10:20]
+
+# 일부 열과 행 선택
+airlines.loc[:10, ['id', 'Airline', 'Flight']]
+```
 
 ## 3. 하나 이상의 열을 사용한 데이터 필터링
+```python
+# 하나의 열 필터링
+airlines[airlines['Airline']=='US']
+airlines[airlines['Airline'].isin(['US','UA','DL'])]
+airlineList = ['US','UA','DL']
+airlines[airlines['Airline'].isin(airlineList)]
+airlines[~airlines['Airline'].isin(airlineList)]
+
+# 두개 이상의 열 AND 조건 필터링
+airlines[(airlines['Airline']=='US') & (airlines['AirportFrom']=='BOS') & (airlines['AirportTo']=='CLT')]
+
+# 두개 이상의 열 OR 조건 필터링
+airlines[(airlines['Airline']=='US') | (airlines['AirportFrom']=='BOS')]
+```
 
 ## 4. 데이터 정렬 및 열 삭제
+```python
+# 특정 열 기준 오름차순 정렬
+airlines.sort_values(by='DayOfWeek', ascending=True)
+
+# 열 이름 변경
+airlines.rename(columns={'Airline':'Airline_code', 'AirportFrom':'Airport_from', 'AirportTo':'Airport_to'})
+
+# 열 추가
+airlines['Country'] = 'USA'
+
+# 조건부 열 추가
+airlines['CO_SFO'] = (airlines['Airline']=='CO')&(airlines['AirportFrom']=='SFO')
+
+# 	id  Airline Flight	AirportFrom	AirportTo	DayOfWeek	Time	Length	Delay	Country	CO_SFO
+# 0	1	CO	    269	    SFO	        IAH	        3	        15	    205	    1	    USA	    True
+# 1	2	US	    1558	PHX	        CLT	        3	        15	    222	    1	    USA	    False
+# 2	3	AA	    2400	LAX	        DFW     	3	        20  	165 	1   	USA 	False
+# 3	4	AA	    2466	SFO     	DFW 	    3	        20	    195	    1	    USA	    False
+# 4	5	AS	    108	    ANC 	    SEA     	3       	30  	202 	0	    USA 	False
+
+# 열 삭제
+airlines.drop(['CO_SFO'], axis=1)
+
+# 행 추가
+new_data = {'id':600000, 'Airline':'KA', 'Flight':'1234', 'AirportFrom':'ICH', 'AirportTo':'PHX', 'DayOfWeek':2, 'Time':480, 'Length':500, 'Delay':1, 'Country':'USA'}
+airlines.append(new_data, ignore_index=True)
+
+# 특정 값을 가진 행 삭제
+idx_co = airlines[airlines['Airline']=='CO'].index
+airlines.drop(idx_co)
+
+```
 
 ## 5. 데이터 요약
+```python
+# groupby를 사용한 데이터 요약
+airlines.groupby(['Airline', 'AirportFrom', 'AirportTo'], as_index=False)['id'].agg('count')
+
+# 여러 값에 대한 요약
+airlines.groupby(['Airline', 'AirportFrom', 'AirportTo'])['Time'].agg(['sum', 'count']).reset_index()
+
+# 집계와 함께 pivot_table을 사용하여 요약
+airlines.pivot_table(index=['Airline','AirportFrom','AirportTo'], values=['Time'], aggfunc=['sum', 'count']).reset_index(col_level=1)
+```
