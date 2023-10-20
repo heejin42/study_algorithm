@@ -189,6 +189,19 @@ airlines.pivot_table(index=['Airline','AirportFrom','AirportTo'], values=['Time'
 
 ## 6. 함수 적용
 ```python
+# map() 함수
+df['gender'] = df['gender'].map({'male':0, 'female':1})
+df['lunch'] = df['lunch'].map({'free/reduced':0, 'standard':1})
+
+# datetime 처리 - apply() 함수
+train_df['tempdate'] = train_df.datetime.apply(lambda x:x.split(' '))
+train_df['year'] = train_df['tempdate'].apply(lambda x:x[0].split('-')[0])
+train_df['month'] = train_df['tempdate'].apply(lambda x:x[0].split('-')[1])
+train_df['date'] = train_df['tempdate'].apply(lambda x:x[0].split('-')[2])
+train_df['time'] = train_df['tempdate'].apply(lambda x:x[1].split(':')[0])
+train_df = train_df.drop(['tempdate', 'datetime', 'day'], axis=1)
+
+# 사용자 지정 함수
 def level(x):
     if x > brand_df['High'].describe()['75%']:
         return 1
@@ -201,6 +214,8 @@ def level(x):
     
 brand_df['level'] = brand_df['High'].apply(lambda x: level(x))
 ```
+
+
 
 ## 7. 합치기
 ```python
