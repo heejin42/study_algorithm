@@ -52,6 +52,9 @@ airlines.describe()
 # 75%	    404537.50000	3745.000000	    5.000000	    1035.000000	    162.000000	    1.000000
 # max	    539383.00000	7814.000000	    7.000000	    1439.000000	    655.000000	    1.000000
 
+# 특정 칼럼 값 별 개수 확인
+df['Brand_Name'].value_counts()
+
 # 결측치 개수 확인
 airlines.isna().sum()
 # id             0
@@ -67,6 +70,15 @@ airlines.isna().sum()
 
 # 결측치 제거
 airlines  = airlines.dropna()
+
+# 결측치 채우기
+df.fillna(0)
+# 결측값을 앞 방향 혹은 뒷 방향으로 채우기, limit(회수제한옵션)
+df.fillna(method='ffill', limit=number)
+df.fillna(method='bfill')
+# 결측값을 변수별 평균으로 대체하기
+df.fillna(df.mean())
+
 
 # 중복 데이터 삭제
 airlines = airlines.drop_duplicates()
@@ -165,9 +177,39 @@ airlines.drop(idx_co)
 # groupby를 사용한 데이터 요약
 airlines.groupby(['Airline', 'AirportFrom', 'AirportTo'], as_index=False)['id'].agg('count')
 
+df.groupby('Country')['High'].mean()
+df.groupby(['Country', 'Industry_Tag'])['High'].describe()
+
 # 여러 값에 대한 요약
 airlines.groupby(['Airline', 'AirportFrom', 'AirportTo'])['Time'].agg(['sum', 'count']).reset_index()
 
 # 집계와 함께 pivot_table을 사용하여 요약
 airlines.pivot_table(index=['Airline','AirportFrom','AirportTo'], values=['Time'], aggfunc=['sum', 'count']).reset_index(col_level=1)
+```
+
+## 6. 함수 적용
+```python
+def level(x):
+    if x > brand_df['High'].describe()['75%']:
+        return 1
+    elif x <=  brand_df['High'].describe()['75%'] and x > brand_df['High'].describe()['50%']:
+        return 2
+    elif x <=  brand_df['High'].describe()['50%'] and x >  brand_df['High'].describe()['25%']:
+        return 3
+    else:
+        return 4
+    
+brand_df['level'] = brand_df['High'].apply(lambda x: level(x))
+```
+
+## 7. 합치기
+```python
+new_df = df.merge(brand_df, on='Brand_Name', how='left')
+```
+
+## 8. 비율 확인하기
+```python
+ratio_df = pd.DataFrame(df['Country'].value_counts()/df['Country'].count())
+ratio_df.reset_index(inplace=True)
+ratio_df
 ```
