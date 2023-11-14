@@ -5,6 +5,7 @@
 # MERGE r1 c1 r2 c2 (r1, c1 값을 가진다)
 # UNMERGE r c -> (r,c 위치의 모든 병합 해제 r,c는 값을 가지고 나머지는 초기로)
 # PRINT r c
+# merge 인덱스와 content 표를 두개 만든다.
 
 def solution(commands):
     answer = []
