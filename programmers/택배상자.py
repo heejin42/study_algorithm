@@ -1,27 +1,21 @@
-from collections import deque
-def solution(order):
-    # 배달하는 순서에 맞게 택배를 실어야 한다.
-    # 해당 택배를 실을 순서가 될 때까지 다른 곳에 보관해야 하므로 보조 컨테이너 벨트를 설치한다. 
-    # 스택의 구조, 가장 마지막의 보관한 상자만 뺄 수 있다.
-    # 몇개의 상자를 실을 수 있는지 
-    q = deque(order)
-    stack = []
-    i = 1
-    while q:
-        if i == q[0]:
-            q.popleft()
-            i += 1
-        elif len(stack) > 0 and stack[-1] == q[0]:
-            stack.pop()
-            q.popleft()
-        else:
-            if i > len(order) and stack[-1]!=q[0]:
-                break
-            else:
-                stack.append(i)
-                i += 1
-    answer = len(order)-len(q)
+# n개의 집이 있다. i(1~n)번째 집은 물류창고에서 i만큼 떨어져있다.
+# 최대 cap개의 상자를 실을 수 있는 트럭으로 배달해야 하는 상자를 모두 배달하고 빈 상자는 수거하라.
+# 최소 이동거리를 구하라
+def solution(cap, n, deliveries, pickups):
+    d_val, p_val = 0,0
+    answer = 0
+    for i in range(n):
+        d_val += deliveries[n-i-1]
+        p_val += pickups[n-i-1]
+        while p_val > 0 or d_val > 0:
+            d_val -= cap
+            p_val -= cap
+            answer += 2 * (n-i)
     return answer
 
-order = [5,4,3,2,1]
-print(solution(order))
+
+cap = 4
+n = 5
+deliveries = [1,0,3,1,2]
+pickups = [0,3,0,4,0]
+print(solution(cap, n, deliveries, pickups))
