@@ -22,5 +22,3 @@ for i in range(T):
 #총 이동 거리가 n의 제곱보다 클 때
   else:
     print(n*2)
-
-출처: https://eunhee-programming.tistory.com/99 [코드짜는 문과녀:티스토리]
