@@ -2,22 +2,23 @@ import sys
 from collections import deque
 
 def solution(n, cost, prepare):
-    answer = [0 for _ in range(n+1)]
-    queue = deque([i for i in range(n+1)])
-    while queue:
-        x = queue.popleft()
-        now_cost = cost[x]
-        for i in prepare[x]:
-            if answer[i] == 0:
-                queue.append(x)
-                now_cost = -1
+    q = deque([i for i in range(1, n+1)])
+    dp = [0 for _ in range(n+1)]
+    
+    while q:
+        flag = 1
+        i = q.popleft()
+        needed = 0
+        for pre in prepare[i]:
+            if dp[pre] == 0:
+                q.append(i)
+                flag = 0
                 break
-            else:
-                now_cost += answer[i]
-        if now_cost == -1:
-            continue
-        answer[x] = now_cost
-    print(answer[1:], sep='\n')
+            needed = max(dp[pre], needed)
+        if flag:
+            needed += cost[i]
+            dp[i] = needed
+    print(*dp[1:], sep='\n')
 
 n = int(input())
 cost = [0]
